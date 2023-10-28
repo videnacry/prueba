@@ -6,9 +6,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 
-const container = document.getElementById('root')!;
+const container = getContainer({ pId: 'root' });
 const root = createRoot(container);
-
 root.render(
   <React.StrictMode>
     <Provider store={store}>
@@ -16,6 +15,16 @@ root.render(
     </Provider>
   </React.StrictMode>
 );
+
+function getContainer ({ pId = '', pTag = 'div', pParent = document.body }): HTMLElement {
+  const existingContainer = document.getElementById(pId) ?? null;
+  if (existingContainer !== null) return existingContainer;
+
+  const containerEl = document.createElement(pTag);
+  containerEl.id = pId;
+  pParent.appendChild(containerEl);
+  return containerEl;
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
