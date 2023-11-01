@@ -85,7 +85,10 @@ export const loginSlice = createSlice({
       state.password = action.payload;
     },
     logout: (state) => {
-      state = initialState;
+      state.isLogged = false;
+      state.email = '';
+      state.password = '';
+      storage.remove();
     },
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -119,7 +122,7 @@ export const loginSlice = createSlice({
   },
 });
 
-export const { setEmail, setPassword } = loginSlice.actions;
+export const { setEmail, setPassword, logout } = loginSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

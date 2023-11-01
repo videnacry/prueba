@@ -11,7 +11,7 @@ export const fetchLogin = async ({
   isLogged: boolean;
   error: any;
 }> => {
-  const body = JSON.stringify({ email: pEmail, password: pPassword });
+  const body = JSON.stringify({ email: pEmail.trim(), password: pPassword });
   const headers = {
     "Content-Type": "application/json",
     accept: "application/json",
