@@ -3,7 +3,7 @@ import {
   createSlice,
   type PayloadAction,
 } from "@reduxjs/toolkit";
-import type { RootState } from "../../app/store";
+import type { RootState } from "../../../app/store";
 import { init as initAPI, type loginParams, fetchLogin } from "./loginAPI";
 
 export interface LoginState {

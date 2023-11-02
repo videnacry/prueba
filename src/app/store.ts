@@ -3,7 +3,7 @@ import {
   type ThunkAction,
   type Action,
 } from "@reduxjs/toolkit";
-import loginReducer from "../features/login/loginSlice";
+import loginReducer from "../features/complex/login/loginSlice";
 
 export const store = configureStore({
   reducer: {

@@ -1,26 +1,18 @@
 import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import CameraIcon from "@mui/icons-material/PhotoCamera";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Button } from "@mui/material";
+import { Button, Pagination } from "@mui/material";
 
-import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { logout, selectLogin } from "../login/loginSlice";
-import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../../app/hooks";
+import { selectLogin } from "../login/loginSlice";
+// import { useNavigate } from "react-router-dom";
 
-
-
-// TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme();
 export default function Users(): JSX.Element {
   const [num, setNum] = React.useState(0);
   const [pageNum, setPageNum] = React.useState(0);
@@ -28,9 +20,9 @@ export default function Users(): JSX.Element {
   const [pages, setPages] = React.useState([]);
 
   const state = useAppSelector(selectLogin);
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
+  // const dispatch = useAppDispatch();
+  // const navigate = useNavigate();
+  const navigate = (str = ''): void => { console.log(str); };
   React.useEffect(() => {
     if (!state.isLogged) navigate('/');
   }, [state.isLogged]);
@@ -74,16 +66,8 @@ export default function Users(): JSX.Element {
   }, [users, setUsers, pageNum, setPageNum,]);
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <>
       <CssBaseline />
-      <AppBar position="relative">
-        <Toolbar>
-          <CameraIcon sx={{ mr: 2 }} />
-          <Button variant="contained" color="error" onClick={() => { dispatch(logout()); }}>
-          Log out
-        </Button>
-        </Toolbar>
-      </AppBar>
       <main>
         {/* Hero unit */}
         <Box
@@ -130,9 +114,11 @@ export default function Users(): JSX.Element {
             ))}
           </Grid>
         </Container>
+      <Box sx={{ display: "flex" }}>
+        <Pagination count={pages.length} variant="outlined" shape="rounded"  sx={{margin:'auto'}}/>
+      </Box>
       </main>
-      {/* Footer */}
-      <Box sx={{ bgcolor: "background.paper", p: 6 }} component="footer">
+      <Box sx={{ bgcolor: "primary.main", p: 6 }} component="footer">
         <Typography variant="h6" align="center" gutterBottom>
           Footer
         </Typography>
@@ -146,6 +132,6 @@ export default function Users(): JSX.Element {
         </Typography>
       </Box>
       {/* End footer */}
-    </ThemeProvider>
+    </>
   );
 }
