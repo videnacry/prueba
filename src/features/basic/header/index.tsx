@@ -12,13 +12,18 @@ import Brightness4 from "@mui/icons-material/Brightness4";
 import Account from "./menu/Account";
 import Search from "./Search";
 
-const Header = ({
+import { useAppSelector } from "../../../app/hooks";
+import { selectLogin } from "../../complex/login/loginSlice";
+
+const Index = ({
   toggleThemeMode,
   themeMode,
 }: {
   toggleThemeMode: any;
   themeMode: any;
 }): JSX.Element => {
+  const state = useAppSelector(selectLogin);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -31,9 +36,9 @@ const Header = ({
           >
             MUI
           </Typography>
-          <Search />
+          {state.isLogged && <Search />}
           <Box sx={{ flexGrow: 1 }} />
-          <Account />
+          {state.isLogged && <Account />}
           <Box sx={{ display: { xs: "flex" } }}>
             <IconButton
               sx={{ ml: 1 }}
@@ -49,4 +54,4 @@ const Header = ({
   );
 };
 
-export default Header;
+export default Index;

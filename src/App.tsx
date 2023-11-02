@@ -1,8 +1,12 @@
-import React, { useCallback, useEffect, useMemo } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import React from "react";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  redirect,
+} from "react-router-dom";
 
-import { useAppDispatch } from "./app/hooks";
-import { init } from "./features/complex/login/loginSlice";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
+import { init, selectLogin } from "./features/complex/login/loginSlice";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -19,9 +23,11 @@ import "@fontsource/roboto/700.css";
 const initThemeMode: "light" | "dark" = "dark";
 
 function App(): JSX.Element {
-  const [themeMode, setThemeMode] = React.useState(initThemeMode);
+  const dispatch = useAppDispatch();
+  const state = useAppSelector(selectLogin);
 
-  const theme = useMemo(
+  const [themeMode, setThemeMode] = React.useState(initThemeMode);
+  const theme = React.useMemo(
     () =>
       createTheme({
         palette: {
@@ -30,12 +36,11 @@ function App(): JSX.Element {
       }),
     [themeMode],
   );
-  const toggleThemeMode = useCallback(() => {
+  const toggleThemeMode = React.useCallback(() => {
     setThemeMode((mode) => (mode === "dark" ? "light" : "dark"));
   }, []);
 
-  const dispatch = useAppDispatch();
-  useEffect(() => {
+  React.useEffect(() => {
     dispatch(init()).catch((e: any) => {
       alert(JSON.stringify(e));
     });
@@ -45,14 +50,17 @@ function App(): JSX.Element {
     {
       path: "/",
       element: <Login />,
+      loader: () => redirect("/login"),
     },
     {
       path: "/login",
       element: <Login />,
+      loader: () => (state.isLogged ? redirect("/users") : ""),
     },
     {
       path: "users",
       element: <Users />,
+      loader: () => (!state.isLogged ? redirect("/login") : ""),
     },
   ]);
 
