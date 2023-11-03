@@ -1,6 +1,5 @@
 import * as React from "react";
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
@@ -8,6 +7,9 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Pagination from "@mui/material/Pagination";
+import Paper from "@mui/material/Paper";
+import Toolbar from "@mui/material/Toolbar";
+import AppBar from "@mui/material/AppBar";
 
 const Users = (): JSX.Element => {
   const [num, setNum] = React.useState(0);
@@ -63,29 +65,74 @@ const Users = (): JSX.Element => {
         <Container sx={{ py: 8 }} maxWidth="md">
           <Grid container spacing={4}>
             {users.map((user: any) => (
-              <Grid item key={user.id} xs={12} sm={6} md={4}>
+              <Grid
+                item
+                key={user.id}
+                xs={12}
+                sm={6}
+                md={4}
+                sx={{ position: "relative" }}
+              >
                 <Card
                   sx={{
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
+                    overflow: "hidden",
+                    position: "relative",
+                    pt: "100%",
                   }}
                 >
                   <CardMedia
                     component="div"
                     sx={{
-                      // 16:9
-                      pt: "56.25%",
+                      position: "absolute",
+                      top: "6%",
+                      left: "6%",
+                      width: "59%",
+                      pt: "75%",
+                      borderRadius: 1,
+                      backgroundPosition: "bottom",
                     }}
                     image={user.avatar}
                   />
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {user.email}
-                    </Typography>
-                    <Typography>{user.first_name}</Typography>
-                    <Typography>{user.last_name}</Typography>
-                  </CardContent>
+                  <AppBar
+                    sx={{
+                      position: "absolute",
+                      right: "6%",
+                      width: "30%",
+                      height: "100%",
+                    }}
+                  >
+                    <Toolbar
+                      sx={{ display: "flex", flexDirection: "column", pt: 3 }}
+                    >
+                      <Typography>{user.first_name}</Typography>
+                      <Typography>{user.last_name}</Typography>
+                    </Toolbar>
+                  </AppBar>
+                  <Paper
+                    elevation={8}
+                    square={false}
+                    sx={{
+                      position: "absolute",
+                      bottom: "2%",
+                      width: "100%",
+                      height: "18%",
+                    }}
+                  >
+                    <AppBar sx={{ position: "relative", height: "100%" }}>
+                      <Toolbar
+                        sx={{ height: "100%" }}
+                        style={{ minHeight: "46px" }}
+                      >
+                        <Typography
+                          variant="body1"
+                          component="h1"
+                          sx={{ flexGrow: 1 }}
+                        >
+                          {user.email}
+                        </Typography>
+                      </Toolbar>
+                    </AppBar>
+                  </Paper>
                 </Card>
               </Grid>
             ))}
