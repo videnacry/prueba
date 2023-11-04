@@ -6,9 +6,13 @@ import {
 } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "./app/hooks";
-import { init, selectLogin } from "./features/complex/login/loginSlice";
+import {
+  init as initLogin,
+  selectLogin,
+} from "./features/complex/login/loginSlice";
+import { selectApp } from "./AppSlice";
 
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 
 import Login from "./features/complex/login/Login";
 import Users from "./features/complex/users/Index";
@@ -20,28 +24,13 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
-const initThemeMode: "light" | "dark" = "dark";
-
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
-  const state = useAppSelector(selectLogin);
-
-  const [themeMode, setThemeMode] = React.useState(initThemeMode);
-  const theme = React.useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode: themeMode,
-        },
-      }),
-    [themeMode],
-  );
-  const toggleThemeMode = React.useCallback(() => {
-    setThemeMode((mode) => (mode === "dark" ? "light" : "dark"));
-  }, []);
+  const appState = useAppSelector(selectApp);
+  const loginState = useAppSelector(selectLogin);
 
   React.useEffect(() => {
-    dispatch(init()).catch((e: any) => {
+    dispatch(initLogin()).catch((e: any) => {
       alert(JSON.stringify(e));
     });
   }, []);
@@ -55,18 +44,18 @@ function App(): JSX.Element {
     {
       path: "/login",
       element: <Login />,
-      loader: () => (state.isLogged ? redirect("/users") : ""),
+      loader: () => (loginState.isLogged ? redirect("/users") : ""),
     },
     {
       path: "users",
       element: <Users />,
-      loader: () => (!state.isLogged ? redirect("/login") : ""),
+      loader: () => (!loginState.isLogged ? redirect("/login") : ""),
     },
   ]);
 
   return (
-    <ThemeProvider theme={theme}>
-      <Header toggleThemeMode={toggleThemeMode} themeMode={themeMode} />
+    <ThemeProvider theme={appState.theme}>
+      <Header />
       <RouterProvider router={router} />
     </ThemeProvider>
   );

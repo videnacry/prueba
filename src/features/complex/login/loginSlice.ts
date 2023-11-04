@@ -6,7 +6,7 @@ import {
 import type { RootState } from "../../../app/store";
 import { init as initAPI, type loginParams, fetchLogin } from "./loginAPI";
 
-export interface LoginState {
+export interface ILoginState {
   email: string;
   password: string;
   fetchStatus: "idle" | "loading" | "failed";
@@ -14,7 +14,7 @@ export interface LoginState {
   error: any;
 }
 
-const initialState: LoginState = {
+const initialState: ILoginState = {
   email: "",
   password: "",
   fetchStatus: "idle",
@@ -49,10 +49,7 @@ export const submitSession = createAsyncThunk(
   async (pLoginParams: loginParams) => {
     let couldLog = false;
     try {
-      const {
-        isLogged,
-        error: fetchError,
-      } = await fetchLogin(pLoginParams);
+      const { isLogged, error: fetchError } = await fetchLogin(pLoginParams);
       couldLog = isLogged;
       if (isLogged) {
         const { error: storageError } = await storage.save(pLoginParams);
@@ -86,8 +83,8 @@ export const loginSlice = createSlice({
     },
     logout: (state) => {
       state.isLogged = false;
-      state.email = '';
-      state.password = '';
+      state.email = "";
+      state.password = "";
       storage.remove();
     },
   },
@@ -107,7 +104,7 @@ export const loginSlice = createSlice({
         state.fetchStatus = "failed";
         state.error = action.error;
       })
-      .addCase(init.pending, state => {
+      .addCase(init.pending, (state) => {
         state.fetchStatus = "loading";
       })
       .addCase(init.fulfilled, (state, action) => {
@@ -127,6 +124,6 @@ export const { setEmail, setPassword, logout } = loginSlice.actions;
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
-export const selectLogin = (state: RootState): LoginState => state.login;
+export const selectLogin = (state: RootState): ILoginState => state.login;
 
 export default loginSlice.reducer;

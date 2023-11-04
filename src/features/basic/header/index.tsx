@@ -12,17 +12,14 @@ import Brightness4 from "@mui/icons-material/Brightness4";
 import Account from "./menu/Account";
 import Search from "./Search";
 
-import { useAppSelector } from "../../../app/hooks";
+import { useAppSelector, useAppDispatch } from "../../../app/hooks";
 import { selectLogin } from "../../complex/login/loginSlice";
+import { selectApp, toggleTheme } from "../../../AppSlice";
 
-const Index = ({
-  toggleThemeMode,
-  themeMode,
-}: {
-  toggleThemeMode: any;
-  themeMode: any;
-}): JSX.Element => {
-  const state = useAppSelector(selectLogin);
+const Index = (): JSX.Element => {
+  const dispatch = useAppDispatch();
+  const loginState = useAppSelector(selectLogin);
+  const appState = useAppSelector(selectApp);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -36,16 +33,18 @@ const Index = ({
           >
             MUI
           </Typography>
-          {state.isLogged && <Search />}
+          {loginState.isLogged && <Search />}
           <Box sx={{ flexGrow: 1 }} />
-          {state.isLogged && <Account />}
+          {loginState.isLogged && <Account />}
           <Box sx={{ display: { xs: "flex" } }}>
             <IconButton
               sx={{ ml: 1 }}
-              onClick={toggleThemeMode}
+              onClick={() => {
+                dispatch(toggleTheme());
+              }}
               color="inherit"
             >
-              {themeMode === "dark" ? <Brightness7 /> : <Brightness4 />}
+              {appState.isDarkTheme ? <Brightness7 /> : <Brightness4 />}
             </IconButton>
           </Box>
         </Toolbar>
