@@ -9,11 +9,14 @@ export interface IUserWithSimilarities extends IUser {
   similarities: number;
 }
 
-export type fetchUsersArgs = { pAmount: number; pPageNum: number };
+export interface fetchUsersArgs {
+  pAmount: number;
+  pPageNum: number;
+}
 export interface fetchUsersRes {
   users?: IUser[];
-  totalPages?: Number;
-  totalUsers?: Number;
+  totalPages?: number;
+  totalUsers?: number;
   error: { message?: string };
 }
 
@@ -69,10 +72,10 @@ export const getUsersSortedByAName = ({
       let increment = 1;
       let lastMatchIdx = -2;
       for (let i = 0; i < searchName.length; i++) {
-        let foundIdx = firstName.indexOf(searchName[i]);
+        const foundIdx = firstName.indexOf(searchName[i]);
         if (foundIdx >= 0) {
           similarities += 1;
-          if (foundIdx == lastMatchIdx + 1) {
+          if (foundIdx === lastMatchIdx + 1) {
             similarities += increment;
             increment++;
           } else {

@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -11,52 +12,18 @@ import Paper from "@mui/material/Paper";
 import Toolbar from "@mui/material/Toolbar";
 import AppBar from "@mui/material/AppBar";
 
+import { useAppSelector, useAppDispatch } from "../../../app/hooks";
+import { selectUsers, getUsers, changePage } from "./usersSlice";
+
 const Users = (): JSX.Element => {
-  const [num, setNum] = React.useState(0);
-  const [pageNum, setPageNum] = React.useState(0);
-  const [users, setUsers] = React.useState([]);
-  const [pages, setPages] = React.useState([]);
+  const dispatch = useAppDispatch();
+  const usersState = useAppSelector(selectUsers);
 
   React.useEffect(() => {
-    async function getUsers(): Promise<void> {
-      try {
-        const rawRes = await fetch(
-          `https://reqres.in/api/users?page=${pageNum}&per_page=${6}`,
-          { headers: { Accept: "application/json" }, method: "GET" },
-        );
-        const { data, total_pages: totalPages } = await rawRes.json();
-        const nums: any = [];
-        for (let i = 1; i < totalPages + 1; i++) nums.push(i);
-        setPages(() => nums);
-        setUsers(() => data);
-      } catch (e) {
-        alert(e);
-      }
-    }
-    getUsers(); // eslint-disable-line @typescript-eslint/no-floating-promises
+    dispatch(getUsers()).catch((e: any) => {
+      alert(JSON.stringify(e));
+    });
   }, []);
-
-  React.useEffect(() => {
-    async function getUsers(): Promise<void> {
-      try {
-        const rawRes = await fetch(
-          `https://reqres.in/api/users?page=${pageNum}&per_page=${6}`,
-          { headers: { Accept: "application/json" }, method: "GET" },
-        );
-        const { data, total_pages: totalPages } = await rawRes.json();
-        const nums: any = [];
-        for (let i = 1; i < totalPages + 1; i++) nums.push(i);
-        setPages(() => nums);
-        setUsers(() => data);
-      } catch (e) {
-        alert(e);
-      }
-    }
-    if (num !== pageNum) {
-      setNum(() => pageNum);
-      getUsers(); // eslint-disable-line @typescript-eslint/no-floating-promises
-    }
-  }, [users, setUsers, pageNum, setPageNum]);
 
   return (
     <>
@@ -64,7 +31,7 @@ const Users = (): JSX.Element => {
       <main>
         <Container sx={{ py: 8 }} maxWidth="md">
           <Grid container spacing={4}>
-            {users.map((user: any) => (
+            {usersState.page.users?.map((user: any) => (
               <Grid
                 item
                 key={user.id}
@@ -140,9 +107,9 @@ const Users = (): JSX.Element => {
           <Box sx={{ display: "flex", p: 6 }}>
             <Pagination
               onChange={(e, pageNum) => {
-                setPageNum(pageNum);
+                dispatch(changePage(pageNum));
               }}
-              count={pages.length}
+              count={usersState.totalPages}
               variant="outlined"
               shape="rounded"
               sx={{ margin: "auto" }}
