@@ -9,8 +9,6 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import LinearProgress from "@mui/material/LinearProgress";
-import Alert from "@mui/material/Alert";
-import Snackbar from "@mui/material/Snackbar";
 
 import { useAppSelector, useAppDispatch } from "../../../app/hooks";
 import {
@@ -118,16 +116,6 @@ export default function Login(): JSX.Element {
               Sign In
             </Button>
 
-            <Snackbar
-              open={state.error !== null && state.error !== undefined}
-              autoHideDuration={6000}
-            >
-              <Alert sx={{ width: "100%" }} severity="error">
-                {JSON.stringify(
-                  state.error?.message ?? JSON.stringify(state.error),
-                )}
-              </Alert>
-            </Snackbar>
           </Box>
         </Box>
       </Grid>

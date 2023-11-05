@@ -4,12 +4,14 @@ import {
   type Action,
 } from "@reduxjs/toolkit";
 import loginReducer from "../features/complex/login/loginSlice";
+import usersReducer from "../features/complex/users/usersSlice";
 import appReducer from "../AppSlice";
 
 export const store = configureStore({
   reducer: {
     login: loginReducer,
     app: appReducer,
+    users: usersReducer,
   },
 });
 

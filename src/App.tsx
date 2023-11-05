@@ -12,9 +12,11 @@ import {
 } from "./features/complex/login/loginSlice";
 import { selectApp } from "./AppSlice";
 
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 import { ThemeProvider } from "@mui/material/styles";
 
-import Login from "./features/complex/login/Login";
+import Login from "./features/complex/login/Index";
 import Users from "./features/complex/users/Index";
 import Header from "./features/basic/header/Index";
 
@@ -56,6 +58,16 @@ function App(): JSX.Element {
   return (
     <ThemeProvider theme={appState.theme}>
       <Header />
+      <Snackbar
+              open={loginState.error !== null && loginState.error !== undefined}
+              autoHideDuration={6000}
+            >
+              <Alert sx={{ width: "100%" }} severity="error">
+                {JSON.stringify(
+                  loginState.error?.message ?? JSON.stringify(loginState.error),
+                )}
+              </Alert>
+            </Snackbar>
       <RouterProvider router={router} />
     </ThemeProvider>
   );
