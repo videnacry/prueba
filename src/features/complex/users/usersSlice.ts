@@ -25,7 +25,7 @@ export interface IUsersState {
 
 const initialState: IUsersState = {
   page: {
-    num: 0,
+    num: 1,
     users: [],
   },
   totalPages: 0,
@@ -62,7 +62,7 @@ export const usersSlice = createSlice({
       const pUsers: IUser[] = state.fetchRes.users ?? [];
       const users = getUsersSortedByAName({ pUsers, pName: action.payload });
       const page = {
-        num: 0,
+        num: 1,
         users: users.slice(0, 6),
       };
       const newFetchRes = { ...state.fetchRes, users, page };

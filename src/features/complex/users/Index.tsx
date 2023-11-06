@@ -109,7 +109,8 @@ const Users = (): JSX.Element => {
               onChange={(e, pageNum) => {
                 dispatch(changePage(pageNum));
               }}
-              count={usersState.totalPages}
+              page = { usersState.page.num }
+              count={ usersState.totalPages }
               variant="outlined"
               shape="rounded"
               sx={{ margin: "auto" }}
