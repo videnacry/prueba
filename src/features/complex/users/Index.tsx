@@ -71,8 +71,8 @@ const Users = (): JSX.Element => {
                     <Toolbar
                       sx={{ display: "flex", flexDirection: "column", pt: 3 }}
                     >
-                      <Typography>{user.first_name}</Typography>
-                      <Typography>{user.last_name}</Typography>
+                      <Typography>{user.firstName}</Typography>
+                      <Typography>{user.lastName}</Typography>
                     </Toolbar>
                   </AppBar>
                   <Paper

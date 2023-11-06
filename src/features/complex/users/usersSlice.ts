@@ -66,7 +66,7 @@ export const usersSlice = createSlice({
         users: users.slice(0, 6),
       };
       const newFetchRes = { ...state.fetchRes, users, page };
-      return { ...state, fetchRes: newFetchRes };
+      return { ...state, fetchRes: newFetchRes, page };
     },
     changePage: (state, action: PayloadAction<number>) => {
       if (state.totalPages < action.payload) {

@@ -34,11 +34,21 @@ export const fetchUsers = async ({
       { ...postData },
     );
     const {
-      data: users,
+      data: rawUsers,
       total_pages: totalPages,
       total: totalUsers,
     } = await rawRes.json();
-    const errorMsg = users.length < 1 ? "there is no users to show" : undefined;
+    const errorMsg =
+      rawUsers.length < 1 ? "there is no users to show" : undefined;
+    const users = rawUsers.map((user: any) => {
+      const {
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        avatar,
+      } = user;
+      return { firstName, lastName, email, avatar };
+    });
     const res: fetchUsersRes = {
       users,
       totalPages,

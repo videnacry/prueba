@@ -148,8 +148,10 @@ export const init = async ({
     const strItem = localStorage.getItem(storageName);
     if (strItem != null) {
       const parsedItem = JSON.parse(strItem);
-      const { email: pEmail, password: pPassword } =
-        await getKeysDecrypted({ pEmail: parsedItem.email, pPassword: parsedItem.password });
+      const { email: pEmail, password: pPassword } = await getKeysDecrypted({
+        pEmail: parsedItem.email,
+        pPassword: parsedItem.password,
+      });
       const { isLogged, error } = await fetchLogin({ pEmail, pPassword });
       return { isLogged, error };
     }
@@ -176,9 +178,7 @@ export const init = async ({
     const key = new Uint8Array([
       73, 120, 63, 86, 72, 66, 153, 83, 199, 123, 71, 225,
     ]);
-    const encodedKey = btoa(
-      String.fromCharCode.apply(null, Array.from(key)),
-    );
+    const encodedKey = btoa(String.fromCharCode.apply(null, Array.from(key)));
     const item = localStorage.getItem(encodedKey);
     if (item !== null) {
       const parsedItem = JSON.parse(item);
